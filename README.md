@@ -15,3 +15,8 @@
 - [ ] Q5: PyTorch/TensorFlow on CIFAR-10 (10%)  
 
 ## assignment3
+- [ ] Q1: Image Captioning with Vanilla RNNs (30 points)  
+- [ ] Q2: Image Captioning with Transformers (20 points)  
+- [ ] Q3: Network Visualization: Saliency Maps, Class Visualization, and Fooling Images (15 points)   
+- [ ] Q4: Generative Adversarial Networks (15 points)    
+- [ ] Q5: Self-Supervised Learning for Image Classification (20 points)  
