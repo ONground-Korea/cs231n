@@ -34,6 +34,26 @@ def softmax_loss_naive(W, X, y, reg):
     #############################################################################
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
+    # gradient of softmax = p_i - y_i
+
+    num_classes = W.shape[1]
+    num_train = X.shape[0]
+
+    scores = np.matmul(X, W)
+    scores -= np.max(scores, axis=1)[:, None]
+    softmax = np.exp(scores)
+    softmax /= softmax.sum(axis=1)[:, None]
+
+    loss = np.sum(-np.log(softmax[np.arange(num_train), y]))
+
+    softmax[np.arange(num_train), y] -= 1
+    dW = np.matmul(X.T, softmax)
+
+    loss /= num_train
+    dW /= num_train
+
+    loss += reg * np.sum(W*W)
+    dW += 2*reg*W
     pass
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
@@ -58,7 +78,24 @@ def softmax_loss_vectorized(W, X, y, reg):
     # regularization!                                                           #
     #############################################################################
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+    num_classes = W.shape[1]
+    num_train = X.shape[0]
 
+    scores = np.matmul(X, W)
+    scores -= np.max(scores, axis=1)[:, None]
+    softmax = np.exp(scores)
+    softmax /= softmax.sum(axis=1)[:, None]
+
+    loss = np.sum(-np.log(softmax[np.arange(num_train), y]))
+
+    softmax[np.arange(num_train), y] -= 1
+    dW = np.matmul(X.T, softmax)
+
+    loss /= num_train
+    dW /= num_train
+
+    loss += reg * np.sum(W*W)
+    dW += 2*reg*W
     pass
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
