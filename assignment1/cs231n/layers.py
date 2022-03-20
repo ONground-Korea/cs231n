@@ -158,7 +158,23 @@ def svm_loss(x, y):
     # cs231n/classifiers/linear_svm.py.                                       #
     ###########################################################################
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+    num_train = x.shape[0]
+    num_classes = x.shape[1]
 
+    correct_class_scores = np.zeros(num_train)
+    correct_class_scores = x[np.arange(num_train), y].reshape(num_train, 1)
+
+    margin_matrix = np.maximum(0, x-correct_class_scores+1)
+    margin_matrix[np.arange(num_train), y] = 0
+
+    loss = margin_matrix.sum() / num_train
+
+    margin_flag = np.where(margin_matrix > 0, 1, 0)
+    
+    dx = np.ones_like(x)
+
+    dx[np.arange(num_train), y] = -num_classes + 1
+    dx /= num_train
     pass
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
@@ -189,7 +205,21 @@ def softmax_loss(x, y):
     # cs231n/classifiers/softmax.py.                                          #
     ###########################################################################
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+    num_classes = x.shape[1]
+    num_train = x.shape[0]
+    x -= np.max(x, axis=1, keepdims=True)
+    
+    scores_exp = np.exp(x)
+    scores_sum = np.sum(scores_exp, axis=1, keepdims=True)
+    log_probs = x - np.log(scores_sum)
+    scores_softmax = np.exp(log_probs)
 
+    dx = np.copy(scores_softmax)
+    dx[np.arange(num_train), y] -= 1
+    dx /= num_train
+    
+    loss = -np.sum(log_probs[np.arange(num_train),y])
+    loss /= num_train
     pass
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
